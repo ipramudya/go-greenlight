@@ -1,12 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 )
+
+const ApplicationJSON = "application/json"
 
 func (app *application) readIDParam(r *http.Request) (int64, error) {
 	/** When httprouter is parsing a request, any interpolated URL parameters
@@ -24,4 +27,22 @@ func (app *application) readIDParam(r *http.Request) (int64, error) {
 	}
 
 	return id, nil
+}
+
+func (app *application) writeJSON(rw http.ResponseWriter, data interface{}, code int, headers http.Header) error {
+	json, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	for k, v := range headers {
+		rw.Header()[k] = v
+	}
+
+	json = append(json, '\n')
+	rw.Header().Set("Content-Type", ApplicationJSON)
+	rw.WriteHeader(code)
+	rw.Write([]byte(json))
+
+	return nil
 }
