@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -8,10 +9,33 @@ import (
 	"github.com/ipramudya/go-greenlight/internal/data"
 )
 
+/** Endpont = "/v1/movies"
+ *	Method = POST
+ */
 func (app *application) createMovieHandler(rw http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(rw, "create a new movie")
+	/* decode destination */
+	var input struct {
+		Title   string   `json:"title"`
+		Year    int32    `json:"year"`
+		Runtime int32    `json:"runtime"`
+		Genres  []string `json:"genres"`
+	}
+
+	/** Importantly, notice that when we call Decode() we pass a *pointer* to the input
+	 *	struct as the target decode destination. This must non-nil pointer as decoded target
+	 */
+	err := json.NewDecoder(r.Body).Decode(&input)
+	if err != nil {
+		app.errorResponse(rw, r, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	fmt.Fprintf(rw, "%+v\n", input)
 }
 
+/** Endpont = "/v1/movies/:id"
+ *	Method = GET
+ */
 func (app *application) showMovieHandler(rw http.ResponseWriter, r *http.Request) {
 	id, err := app.readIDParam(r)
 	if err != nil {
