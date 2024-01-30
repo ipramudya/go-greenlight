@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -24,9 +23,9 @@ func (app *application) createMovieHandler(rw http.ResponseWriter, r *http.Reque
 	/** Importantly, notice that when we call Decode() we pass a *pointer* to the input
 	 *	struct as the target decode destination. This must non-nil pointer as decoded target
 	 */
-	err := json.NewDecoder(r.Body).Decode(&input)
+	err := app.readJSON(rw, r, &input)
 	if err != nil {
-		app.errorResponse(rw, r, http.StatusBadRequest, err.Error())
+		app.badRequestResponse(rw, r, err)
 		return
 	}
 
