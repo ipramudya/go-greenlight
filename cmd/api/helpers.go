@@ -29,7 +29,9 @@ func (app *application) readIDParam(r *http.Request) (int64, error) {
 	return id, nil
 }
 
-func (app *application) writeJSON(rw http.ResponseWriter, data interface{}, code int, headers http.Header) error {
+type envelope map[string]interface{}
+
+func (app *application) writeJSON(rw http.ResponseWriter, data envelope, code int, headers http.Header) error {
 	json, err := json.Marshal(data)
 	if err != nil {
 		return err

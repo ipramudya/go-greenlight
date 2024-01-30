@@ -5,10 +5,14 @@ import (
 )
 
 func (app *application) healthHandler(rw http.ResponseWriter, r *http.Request) {
-	data := map[string]string{
-		"status":       "available",
-		"environtment": app.config.env,
-		"version":      Version,
+	data := envelope{
+		"health": envelope{
+			"status": "available",
+			"system_info": map[string]string{
+				"environtment": app.config.env,
+				"version":      Version,
+			},
+		},
 	}
 
 	err := app.writeJSON(rw, data, http.StatusOK, nil)
