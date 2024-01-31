@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ipramudya/go-greenlight/internal/data"
+	"github.com/ipramudya/go-greenlight/internal/validator"
 )
 
 /** Endpont = "/v1/movies"
@@ -26,6 +27,21 @@ func (app *application) createMovieHandler(rw http.ResponseWriter, r *http.Reque
 	err := app.readJSON(rw, r, &input)
 	if err != nil {
 		app.badRequestResponse(rw, r, err)
+		return
+	}
+
+	movie := &data.Movie{
+		Title:   input.Title,
+		Year:    input.Year,
+		Runtime: data.Runtime(input.Runtime),
+		Genres:  input.Genres,
+	}
+
+	/* field validation */
+	vd := validator.New()
+
+	if data.ValidateMovie(vd, movie); !vd.IsValid() {
+		app.failedValidationResponse(rw, r, vd.Errors)
 		return
 	}
 
