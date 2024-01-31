@@ -46,6 +46,4 @@ func main() {
 	logger.Printf("starting %s server on port %s", cfg.env, s.Addr)
 	err := s.ListenAndServe()
 	logger.Fatal(err)
-
-	fmt.Println("Hello, world!")
 }
