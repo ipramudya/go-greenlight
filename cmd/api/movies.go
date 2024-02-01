@@ -107,8 +107,9 @@ func (app *application) listMoviesHandler(rw http.ResponseWriter, r *http.Reques
 	input.Filters.Page = app.readInt(qs, "page", 1, v)
 	input.Filters.PageSize = app.readInt(qs, "page_size", 10, v)
 	input.Filters.Sort = app.readString(qs, "sort", "id")
+	input.SortSafelist = []string{"id", "title", "year", "runtime", "-id", "-title", "-year", "-runtime"}
 
-	if !v.IsValid() {
+	if data.ValidateFilters(v, input.Filters); !v.IsValid() {
 		app.failedValidationResponse(rw, r, v.Errors)
 		return
 	}
@@ -147,6 +148,9 @@ func (app *application) updateMovieHandler(rw http.ResponseWriter, r *http.Reque
 		}
 	}
 
+	/** we need to distinguish between provided value as empty string by client
+	 *  or actual empty field using pointer, so empty field considered as nil value in pointer
+	 */
 	var input struct {
 		Title   *string       `json:"title"`
 		Year    *int32        `json:"year"`
@@ -160,6 +164,8 @@ func (app *application) updateMovieHandler(rw http.ResponseWriter, r *http.Reque
 		app.badRequestResponse(rw, r, err)
 		return
 	}
+
+	/* dereferenced value from pointer */
 	if input.Title != nil {
 		movie.Title = *input.Title
 	}
@@ -169,6 +175,7 @@ func (app *application) updateMovieHandler(rw http.ResponseWriter, r *http.Reque
 	if input.Runtime != nil {
 		movie.Runtime = *input.Runtime
 	}
+	/* no need to dereference bcs this not input.Genres isn't pointer */
 	if input.Genres != nil {
 		movie.Genres = input.Genres
 	}
