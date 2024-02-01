@@ -15,6 +15,7 @@ func (app *application) routes() *httprouter.Router {
 
 	/* routes handlers */
 	r.HandlerFunc(http.MethodGet, "/v1/health", app.healthHandler)
+	r.HandlerFunc(http.MethodGet, "/v1/movies", app.listMoviesHandler)
 	r.HandlerFunc(http.MethodPost, "/v1/movies", app.createMovieHandler)
 	r.HandlerFunc(http.MethodGet, "/v1/movies/:id", app.showMovieHandler)
 	r.HandlerFunc(http.MethodPatch, "/v1/movies/:id", app.updateMovieHandler)
