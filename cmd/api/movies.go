@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/ipramudya/go-greenlight/internal/data"
 	"github.com/ipramudya/go-greenlight/internal/validator"
@@ -107,6 +108,16 @@ func (app *application) updateMovieHandler(rw http.ResponseWriter, r *http.Reque
 			app.serverErrorResponse(rw, r, err)
 		}
 		return
+	}
+
+	/*	if the request contains a X-Expected Version header, verify the movie version in the database
+	 *	matches the expected version specified in the header
+	 */
+	if r.Header.Get("X-Expected-Version") != "" {
+		if strconv.FormatInt(int64(movie.Version), 32) != r.Header.Get("X-Expected-Version") {
+			app.editConflictResponse(rw, r)
+			return
+		}
 	}
 
 	var input struct {
