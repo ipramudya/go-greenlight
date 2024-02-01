@@ -15,10 +15,10 @@ import (
 func (app *application) createMovieHandler(rw http.ResponseWriter, r *http.Request) {
 	/* decode destination */
 	var input struct {
-		Title   string   `json:"title"`
-		Year    int32    `json:"year"`
-		Runtime int32    `json:"runtime"`
-		Genres  []string `json:"genres"`
+		Title   string       `json:"title"`
+		Year    int32        `json:"year"`
+		Runtime data.Runtime `json:"runtime"`
+		Genres  []string     `json:"genres"`
 	}
 
 	/** Importantly, notice that when we call Decode() we pass a *pointer* to the input
@@ -33,7 +33,7 @@ func (app *application) createMovieHandler(rw http.ResponseWriter, r *http.Reque
 	movie := &data.Movie{
 		Title:   input.Title,
 		Year:    input.Year,
-		Runtime: data.Runtime(input.Runtime),
+		Runtime: input.Runtime,
 		Genres:  input.Genres,
 	}
 
@@ -45,7 +45,19 @@ func (app *application) createMovieHandler(rw http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	fmt.Fprintf(rw, "%+v\n", input)
+	err = app.models.Movies.Insert(movie)
+	if err != nil {
+		app.serverErrorResponse(rw, r, err)
+		return
+	}
+
+	headers := make(http.Header)
+	headers.Set("Location", fmt.Sprintf("/v1/movies/%d", movie.ID))
+
+	err = app.writeJSON(rw, envelope{"movie": movie}, http.StatusCreated, headers)
+	if err != nil {
+		app.serverErrorResponse(rw, r, err)
+	}
 }
 
 /** Endpont = "/v1/movies/:id"
