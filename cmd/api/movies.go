@@ -1,9 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/ipramudya/go-greenlight/internal/data"
 	"github.com/ipramudya/go-greenlight/internal/validator"
@@ -70,18 +70,78 @@ func (app *application) showMovieHandler(rw http.ResponseWriter, r *http.Request
 		return
 	}
 
-	movie := data.Movie{
-		ID:        id,
-		CreatedAt: time.Now(),
-		Title:     "Casablanca",
-		Runtime:   102,
-		Genres:    []string{"romance", "drama", "war"},
-		Version:   1,
+	movie, err := app.models.Movies.Get(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, data.ErrRecordNotFound):
+			app.notFoundResponse(rw, r)
+		default:
+			app.serverErrorResponse(rw, r, err)
+		}
+		return
 	}
 
 	err = app.writeJSON(rw, envelope{"movie": movie}, http.StatusOK, nil)
 	if err != nil {
 		app.logger.Println(err)
+		app.serverErrorResponse(rw, r, err)
+	}
+}
+
+/** Endpont = "/v1/movies/:id"
+ *	Method = PUT
+ */
+func (app *application) updateMovieHandler(rw http.ResponseWriter, r *http.Request) {
+	id, err := app.readIDParam(r)
+	if err != nil {
+		app.notFoundResponse(rw, r)
+		return
+	}
+
+	movie, err := app.models.Movies.Get(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, data.ErrRecordNotFound):
+			app.notFoundResponse(rw, r)
+		default:
+			app.serverErrorResponse(rw, r, err)
+		}
+		return
+	}
+
+	var input struct {
+		Title   string       `json:"title"`
+		Year    int32        `json:"year"`
+		Runtime data.Runtime `json:"runtime"`
+		Genres  []string     `json:"genres"`
+	}
+
+	err = app.readJSON(rw, r, &input)
+	if err != nil {
+		app.badRequestResponse(rw, r, err)
+		return
+	}
+
+	movie.Title = input.Title
+	movie.Year = input.Year
+	movie.Runtime = input.Runtime
+	movie.Genres = input.Genres
+
+	v := validator.New()
+
+	if data.ValidateMovie(v, movie); !v.IsValid() {
+		app.failedValidationResponse(rw, r, v.Errors)
+		return
+	}
+
+	err = app.models.Movies.Update(movie)
+	if err != nil {
+		app.serverErrorResponse(rw, r, err)
+		return
+	}
+
+	err = app.writeJSON(rw, envelope{"movie": movie}, http.StatusOK, nil)
+	if err != nil {
 		app.serverErrorResponse(rw, r, err)
 	}
 }
