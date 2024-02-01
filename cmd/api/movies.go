@@ -145,3 +145,30 @@ func (app *application) updateMovieHandler(rw http.ResponseWriter, r *http.Reque
 		app.serverErrorResponse(rw, r, err)
 	}
 }
+
+/** Endpont = "/v1/movies/:id"
+ *	Method = DELETE
+ */
+func (app *application) deleteMovieHandler(rw http.ResponseWriter, r *http.Request) {
+	id, err := app.readIDParam(r)
+	if err != nil {
+		app.notFoundResponse(rw, r)
+		return
+	}
+
+	err = app.models.Movies.Delete(id)
+	if err != nil {
+		switch {
+		case errors.Is(err, data.ErrRecordNotFound):
+			app.notFoundResponse(rw, r)
+		default:
+			app.serverErrorResponse(rw, r, err)
+		}
+		return
+	}
+
+	err = app.writeJSON(rw, envelope{"message": "movie successfully deleted"}, http.StatusOK, nil)
+	if err != nil {
+		app.serverErrorResponse(rw, r, err)
+	}
+}

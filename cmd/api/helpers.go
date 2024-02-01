@@ -68,7 +68,6 @@ func (app *application) readJSON(rw http.ResponseWriter, r *http.Request, destin
 		var invalidUnmarshalError *json.InvalidUnmarshalError
 
 		switch {
-
 		/* There is a syntax problem with the JSON being decoded. */
 		case errors.As(err, &syntaxError):
 			return fmt.Errorf("body contains badly-formed JSON (at character %d)", syntaxError.Offset)
