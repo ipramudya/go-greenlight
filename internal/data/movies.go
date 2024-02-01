@@ -90,6 +90,54 @@ func (m MovieModel) Get(id int64) (*Movie, error) {
 	return &movie, err
 }
 
+func (m MovieModel) GetAll(title string, genre []string, filters Filters) ([]*Movie, error) {
+	query := `
+		SELECT id, created_at, title, year, runtime, genres, version
+		FROM movies
+		ORDER BY id`
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	/* return sql.Row result-set */
+	rows, err := m.DB.QueryContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	/* holder movie data slice */
+	movies := []*Movie{}
+
+	/* iterate through rows in the result-set */
+	for rows.Next() {
+		/* empty movie to hold data for individual movie */
+		var movie Movie
+
+		/* scan values from the row into movie holder Movie struct */
+		err := rows.Scan(
+			&movie.ID,
+			&movie.CreatedAt,
+			&movie.Title,
+			&movie.Year,
+			&movie.Runtime,
+			pq.Array(&movie.Genres),
+			&movie.Version,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		movies = append(movies, &movie)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return movies, nil
+}
+
 func (m MovieModel) Update(movie *Movie) error {
 	query := `
 		UPDATE movies

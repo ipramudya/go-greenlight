@@ -114,7 +114,16 @@ func (app *application) listMoviesHandler(rw http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	fmt.Fprintf(rw, "%+v\n", input)
+	movies, err := app.models.Movies.GetAll(input.Title, input.Genres, input.Filters)
+	if err != nil {
+		app.serverErrorResponse(rw, r, err)
+		return
+	}
+
+	err = app.writeJSON(rw, envelope{"movies": movies}, http.StatusOK, nil)
+	if err != nil {
+		app.serverErrorResponse(rw, r, err)
+	}
 }
 
 /** Endpont = "/v1/movies/:id"
