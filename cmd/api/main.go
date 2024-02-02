@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,13 +15,18 @@ import (
 const Version = "1.0.0"
 
 type config struct {
-	port int    // network port address
-	env  string // (development, stagging, production, etc)
+	port int
+	env  string
 	db   struct {
 		dsn         string
 		maxOpenConn int
 		maxIdleConn int
 		maxIdleTime string
+	}
+	limiter struct {
+		rps     float64
+		burst   int
+		enabled bool
 	}
 }
 
@@ -35,15 +39,8 @@ type application struct {
 func main() {
 	var cfg config
 
-	flag.IntVar(&cfg.port, "port", 4000, "API server port")
-	flag.StringVar(&cfg.env, "env", "development", "Environtment (development|stagging|production)")
-	flag.StringVar(&cfg.db.dsn, "db-dsn", os.Getenv("GREENLIGHT_DB_DSN"), "PostgreSQL DSN")
-	flag.IntVar(&cfg.db.maxOpenConn, "db-max-open-cons", 25, "PostgreSQL max open connections")
-	flag.IntVar(&cfg.db.maxIdleConn, "db-max-idle-cons", 25, "PostgreSQL max idle connections")
-	flag.StringVar(&cfg.db.maxIdleTime, "db-max-idle-time", "15m", "PostgreSQL max connection idle time")
-	flag.Parse()
+	setupFlag(&cfg)
 
-	// logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)
 
 	db, err := openDB(cfg)
@@ -68,7 +65,6 @@ func main() {
 		ErrorLog:     log.New(logger, "", 0),
 	}
 
-	// logger.Printf("starting %s server on port %s", cfg.env, s.Addr)
 	logger.PrintInfo("starting server...", map[string]string{
 		"addr": s.Addr,
 		"env":  app.env,

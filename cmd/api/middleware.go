@@ -70,7 +70,7 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 		// initialize a new rate limiter and add the IP address and
 		// limitter to the map if it doesn't already exist
 		if _, found := clients[ip]; !found {
-			clients[ip] = &client{limitter: rate.NewLimiter(2, 4)}
+			clients[ip] = &client{limitter: rate.NewLimiter(rate.Limit(app.limiter.rps), app.limiter.burst)}
 		}
 
 		// call Allow limitter method for the current IP address,
