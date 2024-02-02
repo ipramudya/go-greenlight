@@ -1,8 +1,6 @@
 package main
 
 import (
-	"context"
-	"database/sql"
 	"flag"
 	"fmt"
 	"log"
@@ -11,6 +9,7 @@ import (
 	"time"
 
 	"github.com/ipramudya/go-greenlight/internal/data"
+	"github.com/ipramudya/go-greenlight/internal/jsonlog"
 	_ "github.com/lib/pq"
 )
 
@@ -29,7 +28,7 @@ type config struct {
 
 type application struct {
 	config
-	logger *log.Logger
+	logger *jsonlog.Logger
 	models data.Models
 }
 
@@ -44,14 +43,15 @@ func main() {
 	flag.StringVar(&cfg.db.maxIdleTime, "db-max-idle-time", "15m", "PostgreSQL max connection idle time")
 	flag.Parse()
 
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	// logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	logger := jsonlog.New(os.Stdout, jsonlog.LevelInfo)
 
 	db, err := openDB(cfg)
 	if err != nil {
-		logger.Fatal(err)
+		logger.PrintFatal(err, nil)
 	}
 	defer db.Close()
-	logger.Print("database connection pool established")
+	logger.PrintInfo("database connection pool established", nil)
 
 	app := &application{
 		config: cfg,
@@ -65,34 +65,14 @@ func main() {
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
+		ErrorLog:     log.New(logger, "", 0),
 	}
 
-	logger.Printf("starting %s server on port %s", cfg.env, s.Addr)
+	// logger.Printf("starting %s server on port %s", cfg.env, s.Addr)
+	logger.PrintInfo("starting server...", map[string]string{
+		"addr": s.Addr,
+		"env":  app.env,
+	})
 	err = s.ListenAndServe()
-	logger.Fatal(err)
-}
-
-func openDB(cfg config) (*sql.DB, error) {
-	db, err := sql.Open("postgres", cfg.db.dsn)
-	if err != nil {
-		return nil, err
-	}
-
-	db.SetMaxOpenConns(cfg.db.maxOpenConn)
-	db.SetMaxIdleConns(cfg.db.maxIdleConn)
-	dbDuration, err := time.ParseDuration(cfg.db.maxIdleTime)
-	if err != nil {
-		return nil, err
-	}
-	db.SetConnMaxIdleTime(dbDuration)
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	err = db.PingContext(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return db, nil
+	logger.PrintFatal(err, nil)
 }
