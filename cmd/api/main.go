@@ -1,11 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
 	"os"
-	"time"
 
 	"github.com/ipramudya/go-greenlight/internal/data"
 	"github.com/ipramudya/go-greenlight/internal/jsonlog"
@@ -56,19 +52,7 @@ func main() {
 		models: data.NewModels(db),
 	}
 
-	s := &http.Server{
-		Addr:         fmt.Sprintf(":%d", app.port),
-		Handler:      app.routes(),
-		IdleTimeout:  time.Minute,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 30 * time.Second,
-		ErrorLog:     log.New(logger, "", 0),
+	if err := app.serve(); err != nil {
+		logger.PrintFatal(err, nil)
 	}
-
-	logger.PrintInfo("starting server...", map[string]string{
-		"addr": s.Addr,
-		"env":  app.env,
-	})
-	err = s.ListenAndServe()
-	logger.PrintFatal(err, nil)
 }
