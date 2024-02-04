@@ -40,6 +40,12 @@ func (app *application) registerUserHandler(rw http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	err = app.mailer.Send(user.Email, "user_welcome.tmpl", user)
+	if err != nil {
+		app.serverErrorResponse(rw, r, err)
+		return
+	}
+
 	err = app.models.Users.Insert(user)
 	if err != nil {
 		switch {

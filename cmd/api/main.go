@@ -5,6 +5,7 @@ import (
 
 	"github.com/ipramudya/go-greenlight/internal/data"
 	"github.com/ipramudya/go-greenlight/internal/jsonlog"
+	"github.com/ipramudya/go-greenlight/internal/mailer"
 	_ "github.com/lib/pq"
 )
 
@@ -14,6 +15,7 @@ type application struct {
 	config
 	logger *jsonlog.Logger
 	models data.Models
+	mailer mailer.Mailer
 }
 
 func main() {
@@ -34,6 +36,7 @@ func main() {
 		config: cfg,
 		logger: logger,
 		models: data.NewModels(db),
+		mailer: *mailer.New(cfg.smtp.host, cfg.smtp.port, cfg.smtp.username, cfg.smtp.password, cfg.smtp.sender),
 	}
 
 	if err := app.serve(); err != nil {

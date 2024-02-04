@@ -15,5 +15,10 @@ func setupFlag(cfg *config) {
 	flag.Float64Var(&cfg.limiter.rps, "limiter-rps", 2, "Rate limiter maximum request per second")
 	flag.IntVar(&cfg.limiter.burst, "limiter-burst", 4, "Rate limiter maximum burst")
 	flag.BoolVar(&cfg.limiter.enabled, "limiter-enabled", true, "Enable rate limiter")
+	flag.StringVar(&cfg.smtp.host, "smtp-host", "sandbox.smtp.mailtrap.io", "SMTP host")
+	flag.IntVar(&cfg.smtp.port, "smtp-port", 2525, "SMTP port")
+	flag.StringVar(&cfg.smtp.username, "smtp-username", "122595c8bcd3c9", "SMTP username")
+	flag.StringVar(&cfg.smtp.password, "smtp-password", "aee8a44eed97d6", "SMTP password")
+	flag.StringVar(&cfg.smtp.sender, "smtp-sender", "ipramudya.dev@gmail.com", "SMTP sender")
 	flag.Parse()
 }
