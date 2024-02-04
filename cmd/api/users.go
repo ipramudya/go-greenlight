@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/ipramudya/go-greenlight/internal/data"
 	"github.com/ipramudya/go-greenlight/internal/validator"
@@ -53,9 +54,19 @@ func (app *application) registerUserHandler(rw http.ResponseWriter, r *http.Requ
 		return
 	}
 
+	token, err := app.models.Tokens.New(user.ID, 3*24*time.Hour, data.ScopeActivation)
+	if err != nil {
+		app.serverErrorResponse(rw, r, err)
+		return
+	}
+
 	app.background(
 		func() {
-			err := app.mailer.Send(user.Email, "user_welcome.tmpl", user)
+			data := map[string]interface{}{
+				"activationToken": token.Plaintext,
+				"userID":          token.UserID,
+			}
+			err := app.mailer.Send(user.Email, "user_welcome.tmpl", data)
 			if err != nil {
 				app.logger.PrintError(err, nil)
 				return
