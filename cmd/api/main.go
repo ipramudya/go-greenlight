@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"sync"
 
 	"github.com/ipramudya/go-greenlight/internal/data"
 	"github.com/ipramudya/go-greenlight/internal/jsonlog"
@@ -16,6 +17,7 @@ type application struct {
 	logger *jsonlog.Logger
 	models data.Models
 	mailer mailer.Mailer
+	wg     sync.WaitGroup
 }
 
 func main() {
@@ -39,7 +41,8 @@ func main() {
 		mailer: *mailer.New(cfg.smtp.host, cfg.smtp.port, cfg.smtp.username, cfg.smtp.password, cfg.smtp.sender),
 	}
 
-	if err := app.serve(); err != nil {
+	err = app.serve()
+	if err != nil {
 		logger.PrintFatal(err, nil)
 	}
 }

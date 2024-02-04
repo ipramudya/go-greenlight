@@ -16,7 +16,7 @@ import (
 
 const ApplicationJSON = "application/json"
 
-func (application) readIDParam(r *http.Request) (int64, error) {
+func (*application) readIDParam(r *http.Request) (int64, error) {
 	/** When httprouter is parsing a request, any interpolated URL parameters
 	 * 	stored in the request context. This method return a slice containing these parameter names and values
 	 */
@@ -36,7 +36,7 @@ func (application) readIDParam(r *http.Request) (int64, error) {
 
 type envelope map[string]interface{}
 
-func (application) writeJSON(rw http.ResponseWriter, data envelope, code int, headers http.Header) error {
+func (*application) writeJSON(rw http.ResponseWriter, data envelope, code int, headers http.Header) error {
 	json, err := json.Marshal(data)
 	if err != nil {
 		return err
@@ -54,7 +54,7 @@ func (application) writeJSON(rw http.ResponseWriter, data envelope, code int, he
 	return nil
 }
 
-func (application) readJSON(rw http.ResponseWriter, r *http.Request, destination interface{}) error {
+func (*application) readJSON(rw http.ResponseWriter, r *http.Request, destination interface{}) error {
 	/* limit the size of the request body to 1MB */
 	maxBytes := 1_048_576
 	r.Body = http.MaxBytesReader(rw, r.Body, int64(maxBytes))
@@ -117,7 +117,7 @@ func (application) readJSON(rw http.ResponseWriter, r *http.Request, destination
 	return nil
 }
 
-func (application) readString(qs url.Values, key, defaultValue string) string {
+func (*application) readString(qs url.Values, key, defaultValue string) string {
 	s := qs.Get(key)
 	if s == "" {
 		return defaultValue
@@ -126,7 +126,7 @@ func (application) readString(qs url.Values, key, defaultValue string) string {
 	return s
 }
 
-func (application) readInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
+func (*application) readInt(qs url.Values, key string, defaultValue int, v *validator.Validator) int {
 	s := qs.Get(key)
 	if s == "" {
 		return defaultValue
@@ -141,7 +141,7 @@ func (application) readInt(qs url.Values, key string, defaultValue int, v *valid
 	return i
 }
 
-func (application) readSlice(qs url.Values, key string, defaultValue []string) []string {
+func (*application) readSlice(qs url.Values, key string, defaultValue []string) []string {
 	s := qs.Get(key)
 	if s == "" {
 		return defaultValue
@@ -151,7 +151,11 @@ func (application) readSlice(qs url.Values, key string, defaultValue []string) [
 }
 
 func (app *application) background(fn func()) {
+	app.wg.Add(1)
+
 	go func() {
+		defer app.wg.Done()
+
 		defer func() {
 			if err := recover(); err != nil {
 				app.logger.PrintError(fmt.Errorf("%s", err), nil)
