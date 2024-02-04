@@ -40,12 +40,6 @@ func (app *application) registerUserHandler(rw http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	err = app.mailer.Send(user.Email, "user_welcome.tmpl", user)
-	if err != nil {
-		app.serverErrorResponse(rw, r, err)
-		return
-	}
-
 	err = app.models.Users.Insert(user)
 	if err != nil {
 		switch {
@@ -59,7 +53,17 @@ func (app *application) registerUserHandler(rw http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	err = app.writeJSON(rw, envelope{"user": user}, http.StatusCreated, nil)
+	app.background(
+		func() {
+			err := app.mailer.Send(user.Email, "user_welcome.tmpl", user)
+			if err != nil {
+				app.logger.PrintError(err, nil)
+				return
+			}
+		},
+	)
+
+	err = app.writeJSON(rw, envelope{"user": user}, http.StatusAccepted, nil)
 	if err != nil {
 		app.serverErrorResponse(rw, r, err)
 	}
