@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/base32"
+	"errors"
 	"time"
 
 	"github.com/ipramudya/go-greenlight/internal/validator"
@@ -55,7 +56,7 @@ func generateToken(userID int64, ttl time.Duration, scope string) (*Token, error
 	return token, nil
 }
 
-func validateTokenPlaintext(v *validator.Validator, tokenPlaintext string) {
+func ValidateTokenPlaintext(v *validator.Validator, tokenPlaintext string) {
 	v.Check(tokenPlaintext != "", "token", "must be provided")
 	v.Check(len(tokenPlaintext) == 26, "token", "must be 26 bytes long")
 }
@@ -98,4 +99,42 @@ func (m TokenModel) DeleteAllForUser(scope string, userID int64) error {
 
 	_, err := m.DB.ExecContext(ctx, query, args...)
 	return err
+}
+
+func (m TokenModel) GetForToken(tokenScope, tokenPlaintext string) (*User, error) {
+	tokenHash := sha256.Sum256([]byte(tokenPlaintext))
+
+	query := `
+		SELECT u.id, u.created_at, u.name, u.email, u.password_hash, u.activated, u.version
+		FROM users u
+		INNER JOIN tokens t
+			ON u.id = t.user_id
+		WHERE
+			t.hash = $1 AND t.scope = $2 AND t.expiry > $3`
+	args := []interface{}{tokenHash[:], tokenScope, time.Now()}
+
+	var user User
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	err := m.DB.QueryRowContext(ctx, query, args...).Scan(
+		&user.ID,
+		&user.CreatedAt,
+		&user.Name,
+		&user.Email,
+		&user.Password.hash,
+		&user.Activated,
+		&user.Version,
+	)
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, ErrRecordNotFound
+		default:
+			return nil, err
+		}
+	}
+
+	return &user, nil
 }

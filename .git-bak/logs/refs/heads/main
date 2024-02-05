@@ -1,0 +1,59 @@
+0000000000000000000000000000000000000000 30974c20ae4b1e9270bb9328036b99e0614a8d3f ipramudya <ipramudya.dev@gmail.com> 1706591191 +0700	commit (initial): feat(): init app & configure routes with handlers
+30974c20ae4b1e9270bb9328036b99e0614a8d3f c2f5730a16452955dbde0d54784fe8eaa9797d2d ipramudya <ipramudya.dev@gmail.com> 1706592445 +0700	commit: feat(): json encoding with marshal
+c2f5730a16452955dbde0d54784fe8eaa9797d2d 269f3a432fbe2c0a6dec4c54011fadb1d15f845a ipramudya <ipramudya.dev@gmail.com> 1706593418 +0700	commit: feat(): move write json functionality into helper
+269f3a432fbe2c0a6dec4c54011fadb1d15f845a 7f97d0005e2fb1efbb15180191b43cfc63f2848f ipramudya <ipramudya.dev@gmail.com> 1706594511 +0700	commit: feat(): encoding structs
+7f97d0005e2fb1efbb15180191b43cfc63f2848f 64cf691af7f8172fc69e834e0a98a41851918447 ipramudya <ipramudya.dev@gmail.com> 1706595174 +0700	commit: feat(): enveloping json responses
+64cf691af7f8172fc69e834e0a98a41851918447 593a0eacbc48a1b0f80078157660c61dfe9961b1 ipramudya <ipramudya.dev@gmail.com> 1706597582 +0700	commit: feat(): custom json field
+593a0eacbc48a1b0f80078157660c61dfe9961b1 b27631b5e9ce2999e8676f3747596744e87c7cf2 ipramudya <ipramudya.dev@gmail.com> 1706599199 +0700	commit: feat(): sending appropriate error messages
+b27631b5e9ce2999e8676f3747596744e87c7cf2 a5d1d538593f43b7af80c3c1252b98c7b56656da ipramudya <ipramudya.dev@gmail.com> 1706600798 +0700	commit: feat(): handle incoming request
+a5d1d538593f43b7af80c3c1252b98c7b56656da 481f71e4ae8d13263092917c0d5bc2b94c738a47 ipramudya <ipramudya.dev@gmail.com> 1706601983 +0700	commit: feat(): handle bad request when decoding is error
+481f71e4ae8d13263092917c0d5bc2b94c738a47 5e87431970cff7e742aed6b2495bae5e0a9b679e ipramudya <ipramudya.dev@gmail.com> 1706668130 +0700	commit: feat(): add air live reload
+5e87431970cff7e742aed6b2495bae5e0a9b679e 481f71e4ae8d13263092917c0d5bc2b94c738a47 ipramudya <ipramudya.dev@gmail.com> 1706668148 +0700	reset: moving to HEAD~
+481f71e4ae8d13263092917c0d5bc2b94c738a47 395f438e22d729fa2687d8492767f91be6b0a7a8 ipramudya <ipramudya.dev@gmail.com> 1706668227 +0700	commit: feat(): add air live reload
+395f438e22d729fa2687d8492767f91be6b0a7a8 481f71e4ae8d13263092917c0d5bc2b94c738a47 ipramudya <ipramudya.dev@gmail.com> 1706668236 +0700	reset: moving to HEAD~
+481f71e4ae8d13263092917c0d5bc2b94c738a47 59f2462cbc7a37d9f015d4e57f434ae6be3682fc ipramudya <ipramudya.dev@gmail.com> 1706668247 +0700	commit: feat(): add air live reload
+59f2462cbc7a37d9f015d4e57f434ae6be3682fc 8cc300b354ee7f5d6aa616d3e2051afa2602fc2d ipramudya <ipramudya.dev@gmail.com> 1706670280 +0700	commit: feat(): restricting json input
+8cc300b354ee7f5d6aa616d3e2051afa2602fc2d ce1538248d7c96ebed932a0d9edc8ed05096d231 ipramudya <ipramudya.dev@gmail.com> 1706672973 +0700	commit: feat(): handle validation error
+ce1538248d7c96ebed932a0d9edc8ed05096d231 ce1538248d7c96ebed932a0d9edc8ed05096d231 ipramudya <ipramudya.dev@gmail.com> 1706673063 +0700	Branch: renamed refs/heads/master to refs/heads/main
+ce1538248d7c96ebed932a0d9edc8ed05096d231 e6875c503736359806f8b4fc1090198aa9c931d5 ipramudya <ipramudya.dev@gmail.com> 1706686815 +0700	commit: feat(): db connections
+e6875c503736359806f8b4fc1090198aa9c931d5 21bba601752406970ad634f36e25f7b4a17c468c ipramudya <ipramudya.dev@gmail.com> 1706698433 +0700	commit: feat(): db migrations & connect to it
+21bba601752406970ad634f36e25f7b4a17c468c e5e5e55eab351e0b238243dd3f4f66321f46f1f3 ipramudya <ipramudya.dev@gmail.com> 1706747012 +0700	commit: feat(crud): database insert action
+e5e5e55eab351e0b238243dd3f4f66321f46f1f3 bae7420a6752ce002ee38cf71a3fb957e25ee81e ipramudya <ipramudya.dev@gmail.com> 1706752506 +0700	commit: feat(crud): database read & update action
+bae7420a6752ce002ee38cf71a3fb957e25ee81e e5e5e55eab351e0b238243dd3f4f66321f46f1f3 ipramudya <ipramudya.dev@gmail.com> 1706752510 +0700	reset: moving to HEAD~
+e5e5e55eab351e0b238243dd3f4f66321f46f1f3 66193366961463647aca248baf0e864c3047b110 ipramudya <ipramudya.dev@gmail.com> 1706752514 +0700	commit: feat(crud): database read & update action
+66193366961463647aca248baf0e864c3047b110 57ae85775e851843086a588478e03d021425d1bd ipramudya <ipramudya.dev@gmail.com> 1706771173 +0700	commit: feat(crud): database delete action
+57ae85775e851843086a588478e03d021425d1bd 2f40bd96e93973ef07a55ec8755ef9dada9e379d ipramudya <ipramudya.dev@gmail.com> 1706773451 +0700	commit: feat(crud): database partial patch action
+2f40bd96e93973ef07a55ec8755ef9dada9e379d 108c6e78a711bc75a9862156f5425d807d7336c7 ipramudya <ipramudya.dev@gmail.com> 1706774348 +0700	commit: feat(): implementing optimistic locking
+108c6e78a711bc75a9862156f5425d807d7336c7 f5d6cfaace49a75c1134666bafb31bb0db6d3005 ipramudya <ipramudya.dev@gmail.com> 1706775660 +0700	commit: feat(): round trip locking
+f5d6cfaace49a75c1134666bafb31bb0db6d3005 2414e1b4e43ed653fd5db8fc03843c45051731a8 ipramudya <ipramudya.dev@gmail.com> 1706781807 +0700	commit: feat(): adding query timeouts using context
+2414e1b4e43ed653fd5db8fc03843c45051731a8 d4287320362b10e037085a7da749198db789ccf3 ipramudya <ipramudya.dev@gmail.com> 1706786318 +0700	commit: feat(): adding get all movies route
+d4287320362b10e037085a7da749198db789ccf3 a2266f41b5a4770257f431cb1da14d548159b988 ipramudya <ipramudya.dev@gmail.com> 1706786534 +0700	commit: feat(): adding filters struct
+a2266f41b5a4770257f431cb1da14d548159b988 2039e4fc4cbc8b002c63b667b738c916164c9732 ipramudya <ipramudya.dev@gmail.com> 1706806596 +0700	commit: feat(): validating query string params
+2039e4fc4cbc8b002c63b667b738c916164c9732 760bb1c43562e4cf7862b08b80ab4b5f95ae73bd ipramudya <ipramudya.dev@gmail.com> 1706807541 +0700	commit: feat(): listing data
+760bb1c43562e4cf7862b08b80ab4b5f95ae73bd f0783c23f7c29b937af8c09ba2049ea0fd29e4eb ipramudya <ipramudya.dev@gmail.com> 1706808649 +0700	commit: feat(): dynamic filtering list
+f0783c23f7c29b937af8c09ba2049ea0fd29e4eb b6b89741f94a1cfefa0ef62b79f4c98a4ff72c0e ipramudya <ipramudya.dev@gmail.com> 1706810205 +0700	commit: feat(): full text search title
+b6b89741f94a1cfefa0ef62b79f4c98a4ff72c0e e28967b58474b399c1ca08ef8da15b47f2593562 ipramudya <ipramudya.dev@gmail.com> 1706810736 +0700	commit: feat(): full text search title adding indexes
+e28967b58474b399c1ca08ef8da15b47f2593562 ea6b93a6bceb7c0abb52d2e7bfe9d61030a80b29 ipramudya <ipramudya.dev@gmail.com> 1706832474 +0700	commit: feat(): sorting lists
+ea6b93a6bceb7c0abb52d2e7bfe9d61030a80b29 e0ace24586601477d396e94644bbc1c4926e2505 ipramudya <ipramudya.dev@gmail.com> 1706832945 +0700	commit: feat(): paginate
+e0ace24586601477d396e94644bbc1c4926e2505 4436f9ca3f845334071da14f852fdc81b7768a1f ipramudya <ipramudya.dev@gmail.com> 1706834014 +0700	commit: feat(): records metadata
+4436f9ca3f845334071da14f852fdc81b7768a1f d0c8403493a62b712072eb99b746cffacb5d891a ipramudya <ipramudya.dev@gmail.com> 1706891775 +0700	commit: feat(): json log
+d0c8403493a62b712072eb99b746cffacb5d891a 191f998c9a8e48f9050918268d329a5bdd0f2b95 ipramudya <ipramudya.dev@gmail.com> 1706893539 +0700	commit: feat(): global rate limitter
+191f998c9a8e48f9050918268d329a5bdd0f2b95 cd0cf4c07d03c9d3bfeec6e2baaef548f4c8d161 ipramudya <ipramudya.dev@gmail.com> 1706894944 +0700	commit: feat(): IP based rate limiter
+cd0cf4c07d03c9d3bfeec6e2baaef548f4c8d161 8dd2abeef00e98887cfd36750bcd2983c5722e0a ipramudya <ipramudya.dev@gmail.com> 1706895483 +0700	commit: feat(): configure rate limiters
+8dd2abeef00e98887cfd36750bcd2983c5722e0a be3ea41226f2da79e6d1ccf73e723a3c709f33fe ipramudya <ipramudya.dev@gmail.com> 1706935047 +0700	commit: feat(): catch os SIGINT and SISGTERM signals
+be3ea41226f2da79e6d1ccf73e723a3c709f33fe c1bf6fc6f56b5dc27b0aac87aab52d760f08f80d ipramudya <ipramudya.dev@gmail.com> 1706937258 +0700	commit: feat(): graceful shutdown
+c1bf6fc6f56b5dc27b0aac87aab52d760f08f80d 750a0f8c4d66ad0d8500c11073dd773e14756353 ipramudya <ipramudya.dev@gmail.com> 1706937332 +0700	commit: style(): move config into their place
+750a0f8c4d66ad0d8500c11073dd773e14756353 0bb0939a53ebc4cf1f31c8d775a2cc132de6f9af ipramudya <ipramudya.dev@gmail.com> 1706939949 +0700	commit: feat(): setup users table
+0bb0939a53ebc4cf1f31c8d775a2cc132de6f9af 5f3be269694f24d8406fa2844ef73a5d5e2b4ddd ipramudya <ipramudya.dev@gmail.com> 1706942306 +0700	commit: feat(): creating user model
+5f3be269694f24d8406fa2844ef73a5d5e2b4ddd 0bb0939a53ebc4cf1f31c8d775a2cc132de6f9af ipramudya <ipramudya.dev@gmail.com> 1706942330 +0700	reset: moving to HEAD~
+0bb0939a53ebc4cf1f31c8d775a2cc132de6f9af aa43b33ded9d0ed7be6e55c4bd3e81a55723205d ipramudya <ipramudya.dev@gmail.com> 1706942335 +0700	commit: feat(): creating user model
+aa43b33ded9d0ed7be6e55c4bd3e81a55723205d 5899522568f7015087824523b94acee2154910e4 ipramudya <ipramudya.dev@gmail.com> 1706946306 +0700	commit: feat(): register a user
+5899522568f7015087824523b94acee2154910e4 2a4d62f7a98bfb99eae0deb784122ef7e38afe28 ipramudya <ipramudya.dev@gmail.com> 1707026046 +0700	commit: feat(): create email template
+2a4d62f7a98bfb99eae0deb784122ef7e38afe28 d82c35f2a523091b4afe0cfaae310df7ae7e398d ipramudya <ipramudya.dev@gmail.com> 1707033090 +0700	commit: feat(): send email to sandbox
+d82c35f2a523091b4afe0cfaae310df7ae7e398d 4fcad1281823e7f21a64ed1af15bad43e2400b0d ipramudya <ipramudya.dev@gmail.com> 1707033799 +0700	commit: feat(): background runner & panic recovery
+4fcad1281823e7f21a64ed1af15bad43e2400b0d c5e39f94aaa1bec560a09894231bdf574a1c7737 ipramudya <ipramudya.dev@gmail.com> 1707036274 +0700	commit: feat(): graceful shutdown on bakground tasks
+c5e39f94aaa1bec560a09894231bdf574a1c7737 a33a6f5d0b182e12225489987bbdfd8059254ac0 ipramudya <ipramudya.dev@gmail.com> 1707037933 +0700	commit: feat(): setup tokens table
+a33a6f5d0b182e12225489987bbdfd8059254ac0 e26062b58190707d27e935ec0c1d5048c7bf85d9 ipramudya <ipramudya.dev@gmail.com> 1707038798 +0700	commit: feat(): creating secure activation tokens
+e26062b58190707d27e935ec0c1d5048c7bf85d9 ff9ff1619dee662f35af625dd22ea8f3fcba15fe ipramudya <ipramudya.dev@gmail.com> 1707039421 +0700	commit: feat(): creating token model and validation check
+ff9ff1619dee662f35af625dd22ea8f3fcba15fe 4cf9502385211398e097516d225dbc4d629c2a61 ipramudya <ipramudya.dev@gmail.com> 1707040331 +0700	commit: feat(): sending activation tokens
+4cf9502385211398e097516d225dbc4d629c2a61 15c53f6b73706176e0a17f46308cdbe85727b79b ipramudya <ipramudya.dev@gmail.com> 1707043378 +0700	commit: feat(): activating a user
