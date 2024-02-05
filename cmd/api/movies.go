@@ -10,7 +10,8 @@ import (
 	"github.com/ipramudya/go-greenlight/internal/validator"
 )
 
-/** Endpont = "/v1/movies"
+/**
+ *	Endpont = "/v1/movies"
  *	Method = POST
  */
 func (app *application) createMovieHandler(rw http.ResponseWriter, r *http.Request) {
@@ -61,7 +62,8 @@ func (app *application) createMovieHandler(rw http.ResponseWriter, r *http.Reque
 	}
 }
 
-/** Endpont = "/v1/movies/:id"
+/**
+ *	Endpont = "/v1/movies/:id"
  *	Method = GET
  */
 func (app *application) showMovieHandler(rw http.ResponseWriter, r *http.Request) {
@@ -89,7 +91,8 @@ func (app *application) showMovieHandler(rw http.ResponseWriter, r *http.Request
 	}
 }
 
-/** Endpont = "/v1/movies"
+/**
+ *	Endpont = "/v1/movies"
  *	Method = GET
  */
 func (app *application) listMoviesHandler(rw http.ResponseWriter, r *http.Request) {
@@ -126,7 +129,8 @@ func (app *application) listMoviesHandler(rw http.ResponseWriter, r *http.Reques
 	}
 }
 
-/** Endpont = "/v1/movies/:id"
+/**
+ *	Endpont = "/v1/movies/:id"
  *	Method = PUT
  */
 func (app *application) updateMovieHandler(rw http.ResponseWriter, r *http.Request) {
@@ -213,7 +217,8 @@ func (app *application) updateMovieHandler(rw http.ResponseWriter, r *http.Reque
 	}
 }
 
-/** Endpont = "/v1/movies/:id"
+/**
+ *	Endpont = "/v1/movies/:id"
  *	Method = DELETE
  */
 func (app *application) deleteMovieHandler(rw http.ResponseWriter, r *http.Request) {
