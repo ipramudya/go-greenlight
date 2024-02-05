@@ -97,7 +97,7 @@ func (app *application) activateUserHandler(rw http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	user, err := app.models.Tokens.GetForToken(data.ScopeActivation, input.TokenPlaintext)
+	user, err := app.models.Users.GetForToken(data.ScopeActivation, input.TokenPlaintext)
 	if err != nil {
 		switch {
 		case errors.Is(err, data.ErrRecordNotFound):

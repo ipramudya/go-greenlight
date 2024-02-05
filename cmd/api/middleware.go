@@ -1,12 +1,16 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"net"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
+	"github.com/ipramudya/go-greenlight/internal/data"
+	"github.com/ipramudya/go-greenlight/internal/validator"
 	"golang.org/x/time/rate"
 )
 
@@ -82,6 +86,50 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 		}
 
 		mu.Unlock()
+		next.ServeHTTP(rw, r)
+	})
+}
+
+func (app *application) authenticate(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
+		rw.Header().Add("Vary", "Authorization")
+
+		authorizationH := r.Header.Get("Authorization")
+
+		// when there's no authorization header found, add the AnonymousUser to the request context
+		if authorizationH == "" {
+			r = app.contextSetUser(r, data.AnonymousUser)
+			next.ServeHTTP(rw, r)
+			return
+		}
+
+		headerParts := strings.Split(authorizationH, " ")
+		if len(headerParts) != 2 || headerParts[0] != "Bearer" {
+			app.invalidAuthenticationTokenResponse(rw, r)
+			return
+		}
+
+		token := headerParts[1]
+
+		v := validator.New()
+
+		if data.ValidateTokenPlaintext(v, token); !v.IsValid() {
+			app.invalidAuthenticationTokenResponse(rw, r)
+			return
+		}
+
+		user, err := app.models.Users.GetForToken(data.ScopeAuthentication, token)
+		if err != nil {
+			switch {
+			case errors.Is(err, data.ErrRecordNotFound):
+				app.invalidAuthenticationTokenResponse(rw, r)
+			default:
+				app.serverErrorResponse(rw, r, err)
+			}
+			return
+		}
+
+		r = app.contextSetUser(r, user)
 		next.ServeHTTP(rw, r)
 	})
 }
